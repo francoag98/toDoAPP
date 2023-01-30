@@ -10,3 +10,7 @@ server.use(express.json());
 server.use(morgan("dev"));
 
 server.use("/", routes);
+
+server.listen(3000, () => {
+  console.log(`Server Listening on port 3000`);
+});
