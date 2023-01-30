@@ -5,6 +5,7 @@ import routes from "./routes/index";
 
 dotenv.config();
 export const server = express();
+require("./mongo");
 
 server.use(express.json());
 server.use(morgan("dev"));
