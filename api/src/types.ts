@@ -2,6 +2,7 @@ export interface user {
   Name: String;
   LastName: String;
   Email: String;
+  Password: String;
   Posts: Array<post>;
 }
 
