@@ -1,9 +1,9 @@
-import mongoose, { Schema, Model, SchemaTypes } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export const postSchema = new Schema({
-  Title: { type: String, required: true },
-  Description: { type: String, required: true },
-  User: { type: SchemaTypes.ObjectId, ref: "User" },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 const Post = mongoose.model("Post", postSchema);
