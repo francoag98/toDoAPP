@@ -6,15 +6,12 @@ export const newUser = async (Body: user) => {
     throw Error("Info Missing");
   if (Body.Email) {
     const userExist = await User.findOne({ Email: Body.Email });
-    console.log("hola2");
     if (userExist) {
       throw Error("User already exist");
     }
   }
-  console.log("hola");
 
   let newUsers = await User.create({ ...Body });
-  console.log("hola3");
   return newUsers;
 };
 

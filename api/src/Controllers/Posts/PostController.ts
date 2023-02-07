@@ -5,7 +5,6 @@ export const newPost = async (
   description: string,
   users: object
 ) => {
-  console.log(users);
   if (!title || !description || !users) throw Error("info missing");
   const posts = await Post.create({ title, description, user: users });
   return posts;

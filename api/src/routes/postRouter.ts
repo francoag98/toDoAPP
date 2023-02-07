@@ -2,15 +2,11 @@ import { Request, Response } from "express";
 import { Router } from "express";
 import { getUser } from "../Controllers/Users/UserController";
 import { getPosts, newPost } from "../Controllers/Posts/PostController";
-import Post from "../models/Post";
 
 const route = Router();
 
 route.post("/posts", async (req: Request, res: Response) => {
   const { title, description, user } = req.body;
-  console.log(user);
-  console.log(title);
-  console.log(description);
 
   try {
     const users = await getUser(user);
