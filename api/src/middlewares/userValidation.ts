@@ -2,9 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import User from "../models/User";
 const jwt = require("jsonwebtoken");
 
-module.exports = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("user middleware");
-  const authorization = req.get("authorization");
+module.exports = async (req: any, res: any, next: any) => {
+  const authorization = req.header("authorization");
   let token = null;
 
   if (authorization && authorization.toLocaleLowerCase().startsWith("bearer")) {
@@ -13,7 +12,7 @@ module.exports = async (req: Request, res: Response, next: NextFunction) => {
   if (!token) {
     return res.status(401).json({ error: "token missing or invalid admin" });
   } else {
-    const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+    const decodedToken = jwt.verify(token, process.env.KEY);
 
     let user = null;
     if (decodedToken) {
@@ -23,7 +22,7 @@ module.exports = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ error: "token missing or invalid admin" });
     }
     const { id } = decodedToken;
-    req.params.id = id;
-    next();
+    req.id = id;
+    return next();
   }
 };

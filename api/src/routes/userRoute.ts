@@ -5,6 +5,7 @@ import {
   getUser,
   newUser,
 } from "../Controllers/Users/UserController";
+import User from "../models/User";
 const userValidation = require("../middlewares/userValidation");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -51,6 +52,25 @@ route.post("/login", userValidation, async (req: Request, res: Response) => {
   }
 });
 
+route.get("/users", userValidation, async (req: Request, res: Response) => {
+  try {
+    const authorization = req.header("authorization");
+    let token: string | undefined = authorization?.split("")[1];
+    const decodedToken = jwt.verify(token, process.env.KEY);
+    const Email = decodedToken.Email;
+    console.log(Email);
+    const user2 = await User.findOne({ Email: Email });
+    console.log(user2);
+
+    const user = await getUser(Email);
+    console.log(user);
+
+    user ? res.status(200).send(user) : res.status(400).send("user not exist");
+  } catch (err: any) {
+    res.status(400).send({ err: err.message });
+  }
+});
+
 route.get("/users", async (_req: Request, res: Response) => {
   try {
     const users = await getAllUsers();
@@ -59,15 +79,4 @@ route.get("/users", async (_req: Request, res: Response) => {
     res.status(400).send({ err: err.message });
   }
 });
-
-route.get("/users/:Email", async (req: Request, res: Response) => {
-  const { Email } = req.params;
-  try {
-    const user = await getUser(Email);
-    res.status(200).send(user);
-  } catch (err: any) {
-    res.status(400).send({ err: err.message });
-  }
-});
-
 export default route;
