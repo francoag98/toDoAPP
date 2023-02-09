@@ -1,12 +1,9 @@
 import Post from "../../models/Post";
+import { post } from "../../types";
 
-export const newPost = async (
-  title: string,
-  description: string,
-  users: object
-) => {
-  if (!title || !description || !users) throw Error("info missing");
-  const posts = await Post.create({ title, description, user: users });
+export const newPost = async (body: post, user: object) => {
+  if (!body || !user) throw Error("info missing");
+  const posts = await Post.create({ ...body, user: user });
   return posts;
 };
 

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 module.exports = async (req: any, res: any, next: any) => {
   const authorization = req.get("authorization");
   let token = null;
+  console.log("hola");
 
   if (authorization && authorization.toLocaleLowerCase().startsWith("bearer")) {
     token = authorization.split(" ")[1]; // obtenemos el token del authorization 'bearer token'
@@ -13,6 +14,7 @@ module.exports = async (req: any, res: any, next: any) => {
     return res.status(401).json({ error: "token missing or invalid admin" });
   } else {
     const decodedToken = jwt.verify(token, process.env.KEY);
+    console.log("acatoy");
 
     let user = null;
     if (decodedToken) {

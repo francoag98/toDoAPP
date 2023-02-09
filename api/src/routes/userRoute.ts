@@ -5,7 +5,6 @@ import {
   getUser,
   newUser,
 } from "../Controllers/Users/UserController";
-import User from "../models/User";
 const userValidation = require("../middlewares/userValidation");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -28,7 +27,7 @@ route.post("/users", async (req: Request, res: Response) => {
   }
 });
 
-route.post("/login", userValidation, async (req: Request, res: Response) => {
+route.post("/login", async (req: Request, res: Response) => {
   const body = req.body;
   const { Email, Password } = body;
   try {
