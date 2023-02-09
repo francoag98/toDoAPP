@@ -3,7 +3,7 @@ import User from "../models/User";
 const jwt = require("jsonwebtoken");
 
 module.exports = async (req: any, res: any, next: any) => {
-  const authorization = req.header("authorization");
+  const authorization = req.get("authorization");
   let token = null;
 
   if (authorization && authorization.toLocaleLowerCase().startsWith("bearer")) {

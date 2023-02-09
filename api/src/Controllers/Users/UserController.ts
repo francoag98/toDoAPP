@@ -15,9 +15,9 @@ export const newUser = async (Body: user) => {
   return newUsers;
 };
 
-export const getUser = async (id: String) => {
-  if (!id) throw Error("info missing");
-  const userFind = await User.findOne({ _id: id });
+export const getUser = async (Email: String) => {
+  if (!Email) throw Error("info missing");
+  const userFind = await User.findOne({ Email: Email });
   if (!userFind) throw Error("User with that id not exist");
   return userFind;
 };
