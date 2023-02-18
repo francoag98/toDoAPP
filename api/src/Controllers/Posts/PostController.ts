@@ -12,7 +12,7 @@ export const getPost = async (Email: String) => {
   if (!Email) throw Error("Post with that id do not exist");
   const user: user | any = await User.findOne({ Email: Email });
   const id: string = user._id;
-  const posts: post | object = await Post.find({ _id: user?.Posts });
+  const posts: post | object = await Post.find({ _id: user?.Posts }).populate("Users");
   if (!posts) throw Error("Post do not exist");
   const newObj = {
     userId: id,
