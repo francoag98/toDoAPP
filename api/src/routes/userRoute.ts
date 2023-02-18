@@ -32,7 +32,7 @@ route.post("/login", async (req: Request, res: Response) => {
   const body = req.body;
   const { Email, Password } = body;
   try {
-    const user: user = await getUser(Email);
+    const user= await getUser(Email);
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(Password, user.Password);
     if (!user && !passwordCorrect) {
@@ -52,23 +52,25 @@ route.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-route.get("/users", userValidation, async (req: Request, res: Response) => {
+
+
+route.get("/users", async (_req: Request, res: Response) => {
   try {
-    const authorization = req.get("authorization");
-    let token: string | undefined = authorization?.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.KEY);
-    const Email : string = decodedToken.Email;
-    const user : user = await (await getUser(Email)).populate("Posts");
-    user ? res.status(200).send(user) : res.status(400).send("user not exist");
+    const users = await getAllUsers();
+    res.status(200).send(users);
   } catch (err: any) {
     res.status(400).send({ err: err.message });
   }
 });
 
-route.get("/users", async (_req: Request, res: Response) => {
+route.get("/user/token", userValidation, async (req: Request, res: Response) => {
+  const authorization = req.get("authorization");
   try {
-    const users: user = await getAllUsers();
-    res.status(200).send(users);
+    let token: string | undefined = authorization?.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.KEY);
+    const Email : string = decodedToken.Email;
+    const user : user = await (await getUser(Email)).populate("Posts");
+    user ? res.status(200).send(user) : res.status(400).send("user not exist");
   } catch (err: any) {
     res.status(400).send({ err: err.message });
   }
