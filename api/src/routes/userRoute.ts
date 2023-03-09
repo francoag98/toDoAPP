@@ -5,6 +5,7 @@ import {
   getUser,
   newUser,
 } from "../Controllers/Users/UserController";
+import { user } from "../types";
 const userValidation = require("../middlewares/userValidation");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -16,8 +17,8 @@ route.post("/users", async (req: Request, res: Response) => {
 
   try {
     const { _id, Email } = await newUser(Body);
-    const id = _id.toString();
-    const userForToken = { id, Email };
+    const id: string = _id.toString();
+    const userForToken: object = { id, Email };
     const token = jwt.sign(userForToken, process.env.KEY);
     if (token) {
       res.status(200).send({ Email, token });
@@ -37,7 +38,7 @@ route.post("/login", async (req: Request, res: Response) => {
     if (!user && !passwordCorrect) {
       return res.status(401).send({ message: "User or password invalid" });
     }
-    const userForToken = {
+    const userForToken: object = {
       Email: user.Email,
       Name: user.Name,
       id: user._id,
@@ -51,25 +52,6 @@ route.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-route.get(
-  "/users/token",
-  userValidation,
-  async (req: Request, res: Response) => {
-    try {
-      const authorization = req.get("authorization");
-      let token: string | undefined = authorization?.split(" ")[1];
-      const decodedToken = jwt.verify(token, process.env.KEY);
-      const Email = decodedToken.Email;
-      const user = await (await getUser(Email)).populate("Posts");
-      user
-        ? res.status(200).send(user)
-        : res.status(400).send("user not exist");
-    } catch (err: any) {
-      res.status(400).send({ err: err.message });
-    }
-  }
-);
-
 route.get("/users", async (_req: Request, res: Response) => {
   try {
     const users = await getAllUsers();
@@ -78,5 +60,24 @@ route.get("/users", async (_req: Request, res: Response) => {
     res.status(400).send({ err: err.message });
   }
 });
+
+route.get(
+  "/user/token",
+  userValidation,
+  async (req: Request, res: Response) => {
+    const authorization = req.get("authorization");
+    try {
+      let token: string | undefined = authorization?.split(" ")[1];
+      const decodedToken = jwt.verify(token, process.env.KEY);
+      const Email: string = decodedToken.Email;
+      const user: user = await (await getUser(Email)).populate("Posts");
+      user
+        ? res.status(200).send(user)
+        : res.status(400).send("user not exist");
+    } catch (err: any) {
+      res.status(400).send({ err: err.message });
+    }
+  }
+);
 
 export default route;

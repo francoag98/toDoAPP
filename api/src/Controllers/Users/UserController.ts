@@ -11,7 +11,7 @@ export const newUser = async (Body: user) => {
     }
   }
 
-  let newUsers = await User.create({ ...Body });
+  const newUsers = await User.create({ ...Body });
   return newUsers;
 };
 
@@ -23,6 +23,6 @@ export const getUser = async (Email: String) => {
 };
 
 export const getAllUsers = async () => {
-  const users = await User.find();
+  const users = await User.find().populate("Posts");
   return users;
 };

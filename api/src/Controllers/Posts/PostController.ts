@@ -21,7 +21,7 @@ export const getPost = async (Email: String) => {
   return newObj;
 };
 
-export const getPosts = async () => {
-  const posts = await Post.find();
+export const getPosts = async (): Promise<post> => {
+  const posts: post | any = await Post.find();
   return posts;
 };
