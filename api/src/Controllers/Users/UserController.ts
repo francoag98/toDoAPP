@@ -23,6 +23,6 @@ export const getUser = async (Email: String) => {
 };
 
 export const getAllUsers = async () => {
-  const users = await User.find().populate("Posts");
+  const users = await User.find();
   return users;
 };

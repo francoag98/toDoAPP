@@ -62,7 +62,7 @@ route.get("/users", async (_req: Request, res: Response) => {
 });
 
 route.get(
-  "/user/token",
+  "/users/token",
   userValidation,
   async (req: Request, res: Response) => {
     const authorization = req.get("authorization");
