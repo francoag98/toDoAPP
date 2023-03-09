@@ -51,18 +51,24 @@ route.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-route.get("/users", userValidation, async (req: Request, res: Response) => {
-  try {
-    const authorization = req.get("authorization");
-    let token: string | undefined = authorization?.split(" ")[1];
-    const decodedToken = jwt.verify(token, process.env.KEY);
-    const Email = decodedToken.Email;
-    const user = await (await getUser(Email)).populate("Posts");
-    user ? res.status(200).send(user) : res.status(400).send("user not exist");
-  } catch (err: any) {
-    res.status(400).send({ err: err.message });
+route.get(
+  "/users/token",
+  userValidation,
+  async (req: Request, res: Response) => {
+    try {
+      const authorization = req.get("authorization");
+      let token: string | undefined = authorization?.split(" ")[1];
+      const decodedToken = jwt.verify(token, process.env.KEY);
+      const Email = decodedToken.Email;
+      const user = await (await getUser(Email)).populate("Posts");
+      user
+        ? res.status(200).send(user)
+        : res.status(400).send("user not exist");
+    } catch (err: any) {
+      res.status(400).send({ err: err.message });
+    }
   }
-});
+);
 
 route.get("/users", async (_req: Request, res: Response) => {
   try {
