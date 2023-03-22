@@ -16,12 +16,12 @@ route.post("/users", async (req: Request, res: Response) => {
   const Body = req.body;
 
   try {
-    const { _id, Email } = await newUser(Body);
+    const { _id, email } = await newUser(Body);
     const id: string = _id.toString();
-    const userForToken: object = { id, Email };
+    const userForToken: object = { id, email };
     const token = jwt.sign(userForToken, process.env.KEY);
     if (token) {
-      res.status(200).send({ Email, token });
+      res.status(200).send({ email, token });
     }
   } catch (err: any) {
     res.status(400).send(err.message);
@@ -30,23 +30,25 @@ route.post("/users", async (req: Request, res: Response) => {
 
 route.post("/login", async (req: Request, res: Response) => {
   const body = req.body;
-  const { Email, Password } = body;
+  const { email, password } = body;
   try {
-    const user = await getUser(Email);
+    const user = await getUser(email);
     const passwordCorrect =
-      user === null ? false : await bcrypt.compare(Password, user.Password);
-    if (!user && !passwordCorrect) {
+      user === null ? false : await bcrypt.compare(password, user.password);
+    console.log(passwordCorrect);
+
+    if (!passwordCorrect || !user) {
       return res.status(401).send({ message: "User or password invalid" });
     }
     const userForToken: object = {
-      Email: user.Email,
-      Name: user.Name,
+      Email: user.email,
+      Name: user.name,
       id: user._id,
     };
     const token = jwt.sign(userForToken, process.env.KEY);
     return res
       .status(200)
-      .send({ Email: user.Email, Name: user.Name, token: token });
+      .send({ Email: user.email, Name: user.name, token: token });
   } catch (error: any) {
     return res.status(400).send(error.message);
   }

@@ -2,10 +2,10 @@ import { user } from "../../types";
 import User from "../../models/User";
 
 export const newUser = async (Body: user) => {
-  if (!Body.Email || !Body.Name || !Body.LastName || !Body.Password)
+  if (!Body.email || !Body.name || !Body.lastName || !Body.password)
     throw Error("Info Missing");
-  if (Body.Email) {
-    const userExist = await User.findOne({ Email: Body.Email });
+  if (Body.email) {
+    const userExist = await User.findOne({ email: Body.email });
     if (userExist) {
       throw Error("User already exist");
     }
@@ -15,9 +15,9 @@ export const newUser = async (Body: user) => {
   return newUsers;
 };
 
-export const getUser = async (Email: String) => {
-  if (!Email) throw Error("info missing");
-  const userFind = await User.findOne({ Email: Email });
+export const getUser = async (email: String) => {
+  if (!email) throw Error("info missing");
+  const userFind = await User.findOne({ email: email });
   if (!userFind) throw Error("User with that id not exist");
   return userFind;
 };

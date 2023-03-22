@@ -22,7 +22,7 @@ route.post("/posts", userValidation, async (req: Request, res: Response) => {
     const users = await getUser(Email);
     if (users) {
       const posts = await newPost(body, users._id);
-      await users.updateOne({ Posts: [...users.Posts, posts] });
+      await users.updateOne({ Posts: [...users.posts, posts] });
       users.save();
       res.status(200).send(posts);
     }

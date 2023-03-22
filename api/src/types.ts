@@ -1,13 +1,13 @@
 export interface user {
-  Name: String;
-  LastName: String;
-  Email: String;
-  Password: String;
-  Posts: Array<post>;
+  name: String;
+  lastName: String;
+  email: String;
+  password: String;
+  posts: Array<post>;
 }
 
 export interface post {
-  Title: String;
-  Description: String;
-  User: user;
+  title: String;
+  description: String;
+  user: user;
 }
