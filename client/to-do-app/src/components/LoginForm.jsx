@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,14 +7,18 @@ import axios from "axios";
 
 const schema = yup
   .object({
-    email: yup.string().required("Este campo es obligatorio"),
+    email: yup
+      .string()
+      .email("debe ser un mail valido")
+      .required("completa este campo"),
     // .email("Debe ser un mail valido"),
-    password: yup.string().required("Este campo es obligatorio"),
+    password: yup.string().required("completa este campo"),
   })
-  .required();
+  .required("Usuario o contraseña incorrectos");
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [result, setResult] = useState("");
   const {
     register,
     handleSubmit,
@@ -23,7 +27,22 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const handlerSubmit = handleSubmit((value) => {});
+  const handlerSubmit = handleSubmit(async (value) => {
+    let back_url = process.env.REACT_APP_BACKEND_URL;
+    await axios
+      .post(`${back_url}/login`, value)
+      .then(({ data }) => {
+        localStorage.setItem("userSession", JSON.stringify(data));
+        sessionStorage.setItem("userSession", JSON.stringify(data));
+        navigate("/");
+      })
+      .catch((e) => {
+        if (e.response.data.message) {
+          setResult(e.response.data.message);
+        }
+      });
+  });
+
   return (
     <form onSubmit={handlerSubmit}>
       <div>
@@ -43,6 +62,7 @@ export const Login = () => {
           />
           {errors?.password && <p>{errors.password.message}</p>}
         </div>
+        {result.length ? <p>{result}</p> : null}
       </div>
       <div>
         <input type="submit" value="Ingresar" />
