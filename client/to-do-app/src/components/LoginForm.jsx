@@ -33,7 +33,6 @@ export const Login = () => {
       .post(`${back_url}/login`, value)
       .then(({ data }) => {
         localStorage.setItem("userSession", JSON.stringify(data));
-        sessionStorage.setItem("userSession", JSON.stringify(data));
         navigate("/");
       })
       .catch((e) => {

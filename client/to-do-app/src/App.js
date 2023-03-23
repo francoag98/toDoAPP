@@ -1,17 +1,27 @@
 import "./App.css";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Login } from "./components/LoginForm";
 import { RegisterForm } from "./components/RegisterForm";
 import { HomePage } from "./components/Home";
-import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "./Redux/slices/userSlices/userSlice";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state);
 
-  useEffect(() => {
+  const getSession = () => {
     const json = localStorage.getItem("userSession");
     const res = json ? JSON.parse(json) : null;
-    setUser(res);
+    return res;
+  };
+
+  useEffect(() => {
+    const session = getSession();
+    if (session) {
+      dispatch(setUserData());
+    }
   }, []);
 
   return (
