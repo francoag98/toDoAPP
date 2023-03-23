@@ -72,7 +72,7 @@ route.get(
       let token: string | undefined = authorization?.split(" ")[1];
       const decodedToken = jwt.verify(token, process.env.KEY);
       const Email: string = decodedToken.Email;
-      const user: user = await (await getUser(Email)).populate("Posts");
+      const user: user = await (await getUser(Email)).populate("posts");
       user
         ? res.status(200).send(user)
         : res.status(400).send("user not exist");
