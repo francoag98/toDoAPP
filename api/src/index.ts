@@ -3,12 +3,14 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import routes from "./routes/index";
 import cookieSession from "cookie-session";
+import cookieParser from "cookie-parser"
 
 dotenv.config();
 export const server = express();
 require("./mongo");
 const CLIENT_URL = process.env.CLIENT;
 server.use(express.json());
+server.use(cookieParser())
 server.use(morgan("dev"));
 server.use((_req, res, next) => {
   res.header("Access-Control-Allow-Origin", CLIENT_URL); // update to match the domain you will make the request from
@@ -20,14 +22,6 @@ server.use((_req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
-
-server.use(
-  cookieSession({
-    name: "Session",
-    keys: ["TodoApp"],
-    maxAge: (24 * 60 * 60) ^ 100,
-  })
-);
 server.use("/", routes);
 
 server.listen(3001, () => {

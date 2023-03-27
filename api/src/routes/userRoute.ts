@@ -6,6 +6,7 @@ import {
   newUser,
 } from "../Controllers/Users/UserController";
 import { user } from "../types";
+import { serialize } from "cookie";
 const userValidation = require("../middlewares/userValidation");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
