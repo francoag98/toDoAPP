@@ -1,9 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import User from "../models/User";
 const jwt = require("jsonwebtoken");
 
 module.exports = async (req: any, res: any, next: any) => {
   const authorization = req.get("authorization");
+  
   let token = null;
   if (authorization && authorization.toLocaleLowerCase().startsWith("bearer")) {
     token = authorization.split(" ")[1]; // obtenemos el token del authorization 'bearer token'

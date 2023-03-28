@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
@@ -34,11 +34,9 @@ const Login: React.FC = () => {
     }
 
     const loginUser = async (): Promise<IDataUser> =>{
-        console.log(loginData);
         
        const log = await axios.post("http://localhost:3001/login", loginData)
        const response = log.data
-       console.log(response);
        setUser(response)
        return response;
     }
@@ -51,6 +49,7 @@ const Login: React.FC = () => {
             if(user){
                 document.cookie = `myToken = ${users.token}`
                 router.push("/")
+                return users
             }
     
         } catch (error) {
