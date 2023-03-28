@@ -18,11 +18,13 @@ route.post("/posts", userValidation, async (req: Request, res: Response) => {
   try {
     let token: String | undefined = authorization?.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.KEY);
-    const Email = decodedToken.Email;
-    const users = await getUser(Email);
+    const email = decodedToken.Email;
+    const users = await getUser(email);
+    console.log(users);
     if (users) {
       const posts = await newPost(body, users._id);
-      await users.updateOne({ Posts: [...users.posts, posts] });
+      console.log(posts);
+      await users.updateOne({ posts: [...users.posts, posts] });
       users.save();
       res.status(200).send(posts);
     }

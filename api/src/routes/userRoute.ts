@@ -48,14 +48,14 @@ route.post("/login", async (req: Request, res: Response) => {
     };
     const token = jwt.sign(userForToken, process.env.KEY);
 
-     const serialized = serialize("myTokenName", token, {
-         maxAge: 1000 * 60 * 60 * 24 * 30, 
-         httpOnly: true,
-         secure: process.env.NODE_ENV === "production",
-         sameSite: "strict",
-         path: "/"
-     })
-     res.setHeader("Set-Cookie", serialized)
+    const serialized = serialize("myTokenName", token, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
+    res.setHeader("Set-Cookie", serialized);
 
     return res
       .status(200)
@@ -79,15 +79,15 @@ route.get(
   userValidation,
   async (req: Request, res: Response) => {
     const authorization = req.get("authorization");
-    
+
     try {
       let token: string | undefined = authorization?.split(" ")[1];
-        const decodedToken = jwt.verify(token, process.env.KEY);
-        const Email: string = decodedToken.Email;
-        const user: user = await (await getUser(Email)).populate("posts");
-        user
-          ? res.status(200).send(user)
-          : res.status(400).send("user not exist");
+      const decodedToken = jwt.verify(token, process.env.KEY);
+      const Email: string = decodedToken.Email;
+      const user: user = await (await getUser(Email)).populate("posts");
+      user
+        ? res.status(200).send(user)
+        : res.status(400).send("user not exist");
     } catch (err: any) {
       res.status(400).send({ err: err.message });
     }

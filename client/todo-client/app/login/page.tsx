@@ -34,8 +34,7 @@ const Login: React.FC = () => {
     }
 
     const loginUser = async (): Promise<IDataUser> =>{
-        
-       const log = await axios.post("http://localhost:3001/login", loginData)
+       const log = await axios.post("http://localhost:3001/login", loginData)       
        const response = log.data
        setUser(response)
        return response;

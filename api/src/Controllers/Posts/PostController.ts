@@ -8,11 +8,11 @@ export const newPost = async (body: post, user: object) => {
   return posts;
 };
 
-export const getPost = async (Email: String) => {
-  if (!Email) throw Error("Post with that id do not exist");
-  const user: user | any = await User.findOne({ Email: Email });
-  const id: string = user._id;
-  const posts: post | object = await Post.find({ _id: user?.Posts });
+export const getPost = async (email: String) => {
+  if (!email) throw Error("Post with that id do not exist");
+  const user: user | any = await User.findOne({ email: email });
+  const id: string = user?._id;
+  const posts: post | object = await Post.find({ _id: user?.posts });
   if (!posts) throw Error("Post do not exist");
   const newObj = {
     userId: id,
