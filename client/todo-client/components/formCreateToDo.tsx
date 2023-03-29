@@ -1,32 +1,45 @@
 "use client";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export interface ToDo {
   title: string;
   description: string;
 }
-
-export const FormToDo = () => {
+interface Create {
+  onCreate: (value: Boolean) => void;
+}
+export const FormToDo: React.FC<Create> = (props) => {
   const [todo, setTodo] = useState<ToDo>({
     title: "",
     description: "",
   });
-
+  const router = useRouter();
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     return setTodo({ ...todo, [event.target.name]: event.target.value });
   };
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await axios
-      .post("http://localhost:3001/posts", todo)
-      .then((response) => setTodo(response.data));
+    const myToken = document.cookie;
+    const transform = myToken.replace("myToken=", "");
+    await axios.post("http://localhost:3001/posts", todo, {
+      headers: {
+        Authorization: `bearer ${transform}`,
+      },
+    });
+    setTodo({
+      description: "",
+      title: "",
+    });
+    props.onCreate(true);
+    router.refresh();
     return todo;
   };
 
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <h3>Create your ToDo</h3>
       <label>Title</label>
       <input
@@ -34,6 +47,7 @@ export const FormToDo = () => {
         placeholder="Insert your title"
         name="title"
         onChange={changeHandler}
+        value={todo.title}
       />
       <label>Description</label>
       <input
@@ -41,6 +55,7 @@ export const FormToDo = () => {
         placeholder="Create your ToDo"
         name="description"
         onChange={changeHandler}
+        value={todo.description}
       />
       <button type="submit">Crear</button>
     </form>

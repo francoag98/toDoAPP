@@ -4,21 +4,21 @@ import { useState } from "react";
 import axios from "axios";
 import { FormToDo } from "./formCreateToDo";
 import { ToDoList } from "./ListOfAllToDo";
-
+import { useRouter } from "next/navigation";
 
 export interface Post {
   title: string;
   description: string;
-  id: string,
+  id: string;
 }
 
 export interface AppProp {
-  posts:{
+  posts: {
     title: string;
     description: string;
-    id: string,
-  }[]
-};
+    id: string;
+  }[];
+}
 
 export interface codeParams {
   user: IUser;
@@ -34,8 +34,18 @@ const Inicio: React.FC = () => {
     email: "",
     posts: [],
   });
+  const [upload, setUpload] = useState<Boolean>(false);
+  const [posts, setPosts] = useState<AppProp>({ posts: [] });
+  const router = useRouter();
+  const uploaded = (value: Boolean) => {
+    console.log("estoy aca");
+    if (value === true) {
+      console.log("ahora aca");
 
-  const [posts, setPosts] = useState<AppProp>({posts:[]})
+      setUpload(true);
+    }
+    router.refresh();
+  };
 
   useEffect(() => {
     const myToken = document.cookie;
@@ -48,7 +58,6 @@ const Inicio: React.FC = () => {
       })
       .then((response) => response.data)
       .then((data) => {
-
         return setUser(data);
       })
       .catch((error) => {
@@ -57,7 +66,7 @@ const Inicio: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if(!user)return;
+    if (!posts.posts) return;
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
     axios
@@ -67,18 +76,46 @@ const Inicio: React.FC = () => {
         },
       })
       .then((response) => {
-        setPosts(response.data)
-        console.log("posts",posts);
-      }).catch((error) => {
+        setPosts(response.data);
+        console.log("posts", posts);
+      })
+      .catch((error) => {
         console.log(error);
       });
   }, [user]);
+
+  useEffect(() => {
+    if (upload) {
+      const myToken = document.cookie;
+      const transform = myToken.replace("myToken=", "");
+      axios
+        .get("http://localhost:3001/posts/userSpecified", {
+          headers: {
+            Authorization: `bearer ${transform}`,
+          },
+        })
+        .then((response) => {
+          setPosts(response.data);
+          setUpload(false);
+          router.refresh();
+          console.log("posts", posts);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [upload, posts]);
 
   return (
     <main>
       <h1>WELCOME TO TODO APP, {user?.name}</h1>
       <div>
-        <FormToDo />
+        <FormToDo
+          onCreate={() => {
+            uploaded(false);
+            setUpload(true);
+          }}
+        />
       </div>
       <div>
         <ToDoList posts={posts?.posts} />

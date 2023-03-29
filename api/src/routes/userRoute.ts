@@ -52,7 +52,7 @@ route.post("/login", async (req: Request, res: Response) => {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       path: "/",
     });
     res.setHeader("Set-Cookie", serialized);

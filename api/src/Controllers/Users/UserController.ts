@@ -4,11 +4,9 @@ import User from "../../models/User";
 export const newUser = async (Body: user) => {
   if (!Body.email || !Body.name || !Body.lastName || !Body.password)
     throw Error("Info Missing");
-  if (Body.email) {
-    const userExist = await User.findOne({ email: Body.email });
-    if (userExist) {
-      throw Error("User already exist");
-    }
+  const userExist = await User.findOne({ email: Body.email });
+  if (userExist) {
+    throw Error("User already exist");
   }
 
   const newUsers = await User.create({ ...Body });
