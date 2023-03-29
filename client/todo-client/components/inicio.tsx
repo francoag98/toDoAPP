@@ -5,10 +5,21 @@ import axios from "axios";
 import { FormToDo } from "./formCreateToDo";
 import { ToDoList } from "./ListOfAllToDo";
 
+
 export interface Post {
   title: string;
   description: string;
+  id: string,
 }
+
+export interface AppProp {
+  posts:{
+    title: string;
+    description: string;
+    id: string,
+  }[]
+};
+
 export interface codeParams {
   user: IUser;
 }
@@ -23,6 +34,9 @@ const Inicio: React.FC = () => {
     email: "",
     posts: [],
   });
+
+  const [posts, setPosts] = useState<AppProp>({posts:[]})
+
   useEffect(() => {
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
@@ -34,7 +48,6 @@ const Inicio: React.FC = () => {
       })
       .then((response) => response.data)
       .then((data) => {
-        console.log(data);
 
         return setUser(data);
       })
@@ -44,17 +57,22 @@ const Inicio: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!user) return;
+    if(!user)return;
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
     axios
-      .get("http://localhost:3001/users/token", {
+      .get("http://localhost:3001/posts/userSpecified", {
         headers: {
           Authorization: `bearer ${transform}`,
         },
       })
-      .then((response) => response.data);
-  }, [user.posts]);
+      .then((response) => {
+        setPosts(response.data)
+        console.log("posts",posts);
+      }).catch((error) => {
+        console.log(error);
+      });
+  }, [user]);
 
   return (
     <main>
@@ -63,7 +81,7 @@ const Inicio: React.FC = () => {
         <FormToDo />
       </div>
       <div>
-        <ToDoList user={user} />
+        <ToDoList posts={posts?.posts} />
       </div>
     </main>
   );

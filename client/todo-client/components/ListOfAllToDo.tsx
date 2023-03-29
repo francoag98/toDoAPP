@@ -1,18 +1,19 @@
-import React, { ReactComponentElement } from "react";
-import { codeParams } from "./inicio";
+import React from "react";
+import {  AppProp, Post } from "./inicio";
 import { ToDoCard } from "./ToDoCard";
-import { ToDo } from "./formCreateToDo";
 
-export const ToDoList: React.FC<codeParams> = (user: codeParams) => {
+export const ToDoList: React.FC<AppProp> = (props) => {
+  
   return (
     <section>
       <h3>List of To Do</h3>
       <div>
-        {user.user &&
-          user.user?.posts.map((post: ToDo, index) => {
+        {props &&
+          props.posts?.map((post: Post, index) => {
+
             return (
               <div key={index}>
-                <ToDoCard title={post.title} description={post.description} />
+                <ToDoCard title={post.title} description={post.description} id={post.id} />
               </div>
             );
           })}
