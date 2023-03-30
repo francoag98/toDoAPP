@@ -1,11 +1,8 @@
-import Inicio from "@/components/inicio"
-import React from "react"
-import "./globals.module.css"
+import Inicio from "@/components/inicio";
+import React from "react";
 
-const Home = ():React.ReactNode =>{ 
-    return (
-        <Inicio/>
-    )
-}
+const Home = (): React.ReactNode => {
+  return <Inicio />;
+};
 
-export default Home
+export default Home;
