@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.css-selector {
+    background: linear-gradient(113deg, #1ba17e, #1d4916);
+    background-size: 400% 400%;
+
+    -webkit-animation: AnimationName 29s ease infinite;
+    -moz-animation: AnimationName 29s ease infinite;
+    animation: AnimationName 29s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:86% 0%}
+    50%{background-position:15% 100%}
+    100%{background-position:86% 0%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:86% 0%}
+    50%{background-position:15% 100%}
+    100%{background-position:86% 0%}
+}
+@keyframes AnimationName {
+    0%{background-position:86% 0%}
+    50%{background-position:15% 100%}
+    100%{background-position:86% 0%}
+}

@@ -32,7 +32,7 @@ route.post("/users", async (req: Request, res: Response) => {
 route.post("/login", async (req: Request, res: Response) => {
   const body = req.body;
   const { email, password } = body;
-  try {
+
     const user = await getUser(email);
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.password);
@@ -60,9 +60,6 @@ route.post("/login", async (req: Request, res: Response) => {
     return res
       .status(200)
       .send({ Email: user.email, Name: user.name, token: token });
-  } catch (error: any) {
-    return res.status(400).send(error.message);
-  }
 });
 
 route.get("/users", async (_req: Request, res: Response) => {

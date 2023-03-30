@@ -38,13 +38,9 @@ const Inicio: React.FC = () => {
   const [posts, setPosts] = useState<AppProp>({ posts: [] });
   const router = useRouter();
   const uploaded = (value: Boolean) => {
-    console.log("estoy aca");
     if (value === true) {
-      console.log("ahora aca");
-
       setUpload(true);
     }
-    router.refresh();
   };
 
   useEffect(() => {
