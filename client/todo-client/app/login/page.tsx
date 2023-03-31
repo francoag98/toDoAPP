@@ -57,26 +57,26 @@ const Login: React.FC = () => {
     }
   };
   return (
-    <main className="flex flex-col h-screen w-screen m-0 bg-video">
+    <main className="flex flex-col h-screen w-full m-0 bg-video">
       {/* <video src="video3.mp4" autoPlay loop muted className="bg-video"></video> */}
-      <div className="p-4 mt-20 flex flex-col">
-        <h1 className="text-center font-bold text-white text-9xl mt-20 font-sans -mb-16">
+      <div className="flex flex-col sm:mt-9 md:mt-0">
+        <h1 className="text-center font-bold text-white sm:bg-transparent bg-green-700 p-2 text-7xl sm:text-9xl mt-20 sm:mt-10 md:mt-8 lg:mt-10 2xl:mt-24 font-sans -mb-10">
           WELCOME
         </h1>
-        <div className="text-center m-auto -mt-2">
-          <p className="font-sans font-bold text-2xl text-green-700 bg-white mr-2 ml-2 pr-6 pl-7">
+        <div className="text-center m-auto -mt-2 sm:-mt-10">
+          <p className="font-sans font-bold text-sm sm:text-2xl text-green-700 sm:pl-5 sm:pr-4 pr-3 pl-4 bg-white mr-2 ml-3">
             TO TODO APP
           </p>
         </div>
       </div>
       <form
         onSubmit={submitHandler}
-        className="flex flex-col justify-center items-center h-full">
-        <div className="p-12 border-2 border-white bg-white rounded-md">
+        className="flex flex-col justify-center items-center h-full sm:-mt-10 md:-mt-0">
+        <div className="p-12 border-2 sm:w-96 border-white bg-white rounded-md">
           <h2 className="text-green-700 text-center text-xl -mt-3 mb-4 font-bold border-b-2 border-green-700">
             INICIA SESION
           </h2>
-          <div className="flex flex-col gap-1 w-96">
+          <div className="flex flex-col gap-1 w-full">
             <label className=" text-green-700 font-bold">Email</label>
             <input
               onChange={formValues}
