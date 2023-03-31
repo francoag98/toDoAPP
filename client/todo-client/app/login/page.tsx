@@ -60,7 +60,7 @@ const Login: React.FC = () => {
     <main className="flex flex-col h-screen w-full m-0 bg-video">
       {/* <video src="video3.mp4" autoPlay loop muted className="bg-video"></video> */}
       <div className="flex flex-col sm:mt-9 md:mt-0">
-        <h1 className="text-center font-bold text-white sm:bg-transparent bg-green-700 p-2 text-7xl sm:text-9xl mt-20 sm:mt-10 md:mt-8 lg:mt-10 2xl:mt-24 font-sans -mb-10">
+        <h1 className="text-center font-bold text-white sm:bg-transparent p-2 text-7xl sm:text-9xl mt-20 sm:mt-10 md:mt-24 lg:mt-26 2xl:mt-24 font-sans -mb-10">
           WELCOME
         </h1>
         <div className="text-center m-auto -mt-2 sm:-mt-10">

@@ -12,7 +12,7 @@
     }
 }
 
-@media (max-width: 800px) {
+@media (min-width: 800px) {
     .bg-video {
 
         background-image: url("../public/image.jpg");
