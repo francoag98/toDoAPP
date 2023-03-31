@@ -74,14 +74,14 @@ const Login: React.FC = () => {
         className="flex flex-col justify-center items-center h-full sm:-mt-10 md:-mt-0">
         <div className="p-12 border-2 sm:w-96 border-white bg-white rounded-md">
           <h2 className="text-green-700 text-center text-xl -mt-3 mb-4 font-bold border-b-2 border-green-700">
-            INICIA SESION
+            Login
           </h2>
           <div className="flex flex-col gap-1 w-full">
             <label className=" text-green-700 font-bold">Email</label>
             <input
               onChange={formValues}
               type="text"
-              placeholder="Ingresa tu email..."
+              placeholder="Enter your email..."
               name="email"
               className="p-2 w-full border-b-2 bg-transparent border-green-700 text-green-700 focus:outline-none"
             />
@@ -92,7 +92,7 @@ const Login: React.FC = () => {
               onChange={formValues}
               type="password"
               name="password"
-              placeholder="ingresa tu password..."
+              placeholder="Enter your password..."
               className="p-2 border-b-2 bg-transparent border-green-700 rounded-sm text-green-700 focus:outline-none"
             />
           </div>
@@ -101,14 +101,16 @@ const Login: React.FC = () => {
               <button
                 type="submit"
                 className="p-2 text-green-700 font-bold hover:bg-green-700 hover:text-white w-full">
-                Iniciar sesion
+                Submit
               </button>
             </div>
             <div className="mb-3">
-              <span className="mr-1 text-green-700">No tienes cuenta?</span>
+              <span className="mr-1 text-green-700">
+                Do you not have an account?
+              </span>
               <Link href="/register">
                 <button className="text-green-700 font-bold underline">
-                  Registrate
+                  Sign Up
                 </button>
               </Link>
             </div>
