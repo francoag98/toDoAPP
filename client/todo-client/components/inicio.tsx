@@ -103,16 +103,18 @@ const Inicio: React.FC = () => {
 
   return (
     <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-screen">
-      <h1 className="text-center text-7xl text-white underline">TO DO APP</h1> <span className="text-xl">by Franco Aglieri</span>
-      <div className="">
-      <h3>{user?.name}, create your ToDo</h3>
+      <h1 className="text-center text-7xl text-white p-4">TO DO APP</h1>
+      <section className="flex flex-col items-center w-auto">
+        <h3 className="p-2 text-white font-bold text-2xl underline w-full text-center">
+          {user?.name}, create your ToDo
+        </h3>
         <FormToDo
           onCreate={() => {
             uploaded(false);
             setUpload(true);
           }}
         />
-      </div>
+      </section>
       <div>
         <ToDoList posts={posts?.posts} />
       </div>

@@ -39,24 +39,38 @@ export const FormToDo: React.FC<Create> = (props) => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <label>Title</label>
-      <input
-        type="text"
-        placeholder="Insert your title"
-        name="title"
-        onChange={changeHandler}
-        value={todo.title}
-      />
-      <label>Description</label>
-      <input
-        type="text"
-        placeholder="Create your ToDo"
-        name="description"
-        onChange={changeHandler}
-        value={todo.description}
-      />
-      <button type="submit">Crear</button>
+    <form
+      onSubmit={submitHandler}
+      className="flex flex-col w-1/2 bg-white p-4 gap-4 rounded-md">
+      <div className="flex flex-col">
+        <label className="text-green-700 font-bold">Title</label>
+        <input
+          className="p-1 border-b-2 border-green-700 focus:outline-none"
+          type="text"
+          placeholder="Insert your title"
+          name="title"
+          onChange={changeHandler}
+          value={todo.title}
+        />
+      </div>
+      <div className="flex flex-col">
+        <label className="text-green-700 font-bold">Description</label>
+        <input
+          className="p-1 border-b-2 border-green-700 focus:outline-none"
+          type="text"
+          placeholder="Insert your description"
+          name="description"
+          onChange={changeHandler}
+          value={todo.description}
+        />
+      </div>
+      <div className="text-center">
+        <button
+          className="text-green-700 font-bold w-full p-1 border-2 rounded-sm border-green-700 mt-4 hover:bg-green-700 hover:text-white hover:duration-500"
+          type="submit">
+          Crear
+        </button>
+      </div>
     </form>
   );
 };
