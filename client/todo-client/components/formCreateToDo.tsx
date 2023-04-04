@@ -40,7 +40,6 @@ export const FormToDo: React.FC<Create> = (props) => {
 
   return (
     <form onSubmit={submitHandler}>
-      <h3>Create your ToDo</h3>
       <label>Title</label>
       <input
         type="text"

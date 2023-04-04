@@ -6,7 +6,7 @@ export const ToDoList: React.FC<AppProp> = (props) => {
   
   return (
     <section>
-      <h3>List of To Do</h3>
+      <h3>TO DO LIST</h3>
       <div>
         {props &&
           props.posts?.map((post: Post, index) => {

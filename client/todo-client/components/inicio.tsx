@@ -62,7 +62,6 @@ const Inicio: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!posts.posts) return;
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
     axios
@@ -103,9 +102,10 @@ const Inicio: React.FC = () => {
   }, [upload, posts]);
 
   return (
-    <main>
-      <h1>WELCOME TO TODO APP, {user?.name}</h1>
-      <div>
+    <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-screen">
+      <h1 className="text-center text-7xl text-white underline">TO DO APP</h1> <span className="text-xl">by Franco Aglieri</span>
+      <div className="">
+      <h3>{user?.name}, create your ToDo</h3>
         <FormToDo
           onCreate={() => {
             uploaded(false);
