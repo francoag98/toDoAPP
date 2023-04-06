@@ -46,6 +46,8 @@ const Inicio: React.FC = () => {
   useEffect(() => {
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
+    console.log(transform);
+
     axios
       .get("http://localhost:3001/users/token", {
         headers: {
@@ -54,6 +56,7 @@ const Inicio: React.FC = () => {
       })
       .then((response) => response.data)
       .then((data) => {
+        console.log(data);
         return setUser(data);
       })
       .catch((error) => {
@@ -103,9 +106,11 @@ const Inicio: React.FC = () => {
 
   return (
     <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-screen">
-      <h1 className="text-center text-7xl text-white p-4">TO DO APP</h1>
-      <section className="flex flex-col items-center w-auto">
-        <h3 className="p-2 text-white font-bold text-2xl underline w-full text-center">
+      <h1 className="text-center text-6xl text-white p-6 font-serif">
+        TO DO APP
+      </h1>
+      <section className="flex flex-col items-center w-full">
+        <h3 className="p-2 w-fit text-white font-bold text-2xl border-b-2 border-coll mb-4 text-center">
           {user?.name}, create your ToDo
         </h3>
         <FormToDo

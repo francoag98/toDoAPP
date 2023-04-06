@@ -41,11 +41,11 @@ export const FormToDo: React.FC<Create> = (props) => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-col w-1/2 bg-white p-4 gap-4 rounded-md">
+      className="flex flex-col w-80 mb-6 bg-white p-4 gap-4 rounded-md">
       <div className="flex flex-col">
         <label className="text-green-700 font-bold">Title</label>
         <input
-          className="p-1 border-b-2 border-green-700 focus:outline-none"
+          className="p-1 border-b-2 border-green-700 focus:outline-none focus:text-green-700 text-green-700"
           type="text"
           placeholder="Insert your title"
           name="title"
@@ -56,7 +56,7 @@ export const FormToDo: React.FC<Create> = (props) => {
       <div className="flex flex-col">
         <label className="text-green-700 font-bold">Description</label>
         <input
-          className="p-1 border-b-2 border-green-700 focus:outline-none"
+          className="p-1 border-b-2 border-green-700 focus:outline-none focus:text-green-700 text-green-700"
           type="text"
           placeholder="Insert your description"
           name="description"

@@ -48,14 +48,14 @@ route.post("/login", async (req: Request, res: Response) => {
     };
     const token = jwt.sign(userForToken, process.env.KEY);
 
-    const serialized = serialize("myTokenName", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      path: "/",
-    });
-    res.setHeader("Set-Cookie", serialized);
+    // const serialized = serialize("myTokenName", token, {
+    //   maxAge: 1000 * 60 * 60 * 24 * 30,
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "none",
+    //   path: "/",
+    // });
+    // res.setHeader("Set-Cookie", serialized);
 
     return res
       .status(200)
