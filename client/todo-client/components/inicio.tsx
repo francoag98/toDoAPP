@@ -9,17 +9,22 @@ import { useRouter } from "next/navigation";
 export interface Post {
   title: string;
   description: string;
-  id: string;
+  _id: string;
 }
 
 export interface AppProp {
   posts: {
     title: string;
     description: string;
-    id: string;
+    _id: string;
   }[];
 }
-
+export interface Func extends AppProp{
+  onCreate: ()=> void,
+}
+export interface Func2 extends Post {
+  onCreate: ()=> void,
+}
 export interface codeParams {
   user: IUser;
 }
@@ -105,7 +110,7 @@ const Inicio: React.FC = () => {
   }, [upload, posts]);
 
   return (
-    <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-screen">
+    <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-full">
       <h1 className="text-center text-6xl text-white p-6 font-serif">
         TO DO APP
       </h1>
@@ -121,7 +126,10 @@ const Inicio: React.FC = () => {
         />
       </section>
       <div>
-        <ToDoList posts={posts?.posts} />
+        <ToDoList onCreate={()=>{
+          uploaded(false);
+          setUpload(true)
+        }} posts={posts?.posts} />
       </div>
     </main>
   );

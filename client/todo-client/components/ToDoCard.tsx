@@ -1,45 +1,58 @@
 "use client";
 import React from "react";
-import { Post } from "./inicio";
+import { Func2 } from "./inicio";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export const ToDoCard: React.FC<Post> = (post: Post) => {
+export const ToDoCard: React.FC<Func2> = (props) => {
   const handleDelete = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
+    console.log("target2", event.currentTarget);
+    console.log(props);
+    console.log("target", event.currentTarget.value);
+    const myToken = document.cookie;
+    const transform = myToken.replace("myToken=", "");
     await axios
-      .delete(`http://localhost:3001/posts/${event.currentTarget.value}`)
+      .delete(`http://localhost:3001/posts/${event.currentTarget.value}`, {
+        headers:{
+          Authorization: `bearer ${transform}`
+        }
+      })
       .then((res) => {
         Swal.fire({
           icon: "success",
           title:
-            "<h4> El producto fue <h4 style='color: #DD2E2E; font-weight: 700'>deshabilitado</h4></h4>",
+            "<h4> El post fue <h4 style='color: #DD2E2E; font-weight: 700'>eliminado</h4></h4>",
           timer: 2000,
           showConfirmButton: false,
         });
+        props.onCreate()
       })
       .catch((err) => {
         Swal.fire({
           icon: "error",
-          title: `<h4>No se ha podido deshabilitar el producto!, ${err.message}</h4>`,
+          title: `<h4>No se ha podido eliminar el post!</h4>`,
           timer: 2000,
         });
+        console.log(err);
+        
       });
+
   };
 
   return (
     <article className="bg-white rounded-md p-2 mt-4 w-80">
-      <div className="flex gap-2">
-        <div>
+      <div className="flex justify-around gap-2">
+        <div className="border-r-2">
           <div className="border-b-2 w-full">
-            <h4 className="p-1 font-bold text-green-900">{post.title}</h4>
+            <h4 className="p-1 font-bold text-green-900">{props.title}</h4>
           </div>
-          <p className="p-1">{post.description}</p>
+          <p className="p-1">{props.description}</p>
         </div>
-        <div className="flex place-items-center p-2 border-l-2">
-          <button type="button" onClick={() => handleDelete}>
+        <div className="flex place-items-center p-2">
+          <button value={props._id} onClick={(e)=>handleDelete(e)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

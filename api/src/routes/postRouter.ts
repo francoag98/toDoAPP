@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Router } from "express";
 import { getUser } from "../Controllers/Users/UserController";
 import {
+  deletePost,
   getPost,
   getPosts,
   newPost,
@@ -57,6 +58,30 @@ route.get(
       }
     } catch (error: any) {
       res.status(401).send({ error: error.message });
+    }
+  }
+);
+
+route.delete(
+  "/posts/:id",
+  userValidation,
+  async (req:Request, res:Response) => {
+    const id = req.params.id;
+    console.log("estoy en la ruta");
+    console.log("este es el id", id);
+    
+    const authorization = req.get("authorization");
+    try {
+      let token: String | undefined = authorization?.split(" ")[1];
+      const decodedToken = jwt.verify(token, process.env.KEY);
+      const email = decodedToken.Email;
+      const users = await getUser(email);
+      if (users) {
+        const postId = await deletePost(id);
+        res.status(200).send(postId);
+      }
+    } catch (error: any) {
+       res.status(400).send({ error: error.message });
     }
   }
 );

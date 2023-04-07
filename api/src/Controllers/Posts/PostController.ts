@@ -25,3 +25,11 @@ export const getPosts = async (): Promise<post> => {
   const posts: post | any = await Post.find();
   return posts;
 };
+
+export const deletePost = async (id: String): Promise<post> => {
+  console.log("toy aca en el controlador");
+  
+  const postId: post | null = await Post.findOneAndDelete({_id: id});
+  if(!postId) throw new Error("Post with that id does not exist")
+  return postId
+}
