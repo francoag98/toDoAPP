@@ -16,9 +16,9 @@ export const ToDoCard: React.FC<Func2> = (props) => {
     const transform = myToken.replace("myToken=", "");
     await axios
       .delete(`http://localhost:3001/posts/${event.currentTarget.value}`, {
-        headers:{
-          Authorization: `bearer ${transform}`
-        }
+        headers: {
+          Authorization: `bearer ${transform}`,
+        },
       })
       .then((res) => {
         Swal.fire({
@@ -28,7 +28,7 @@ export const ToDoCard: React.FC<Func2> = (props) => {
           timer: 2000,
           showConfirmButton: false,
         });
-        props.onCreate()
+        props.onCreate();
       })
       .catch((err) => {
         Swal.fire({
@@ -37,22 +37,22 @@ export const ToDoCard: React.FC<Func2> = (props) => {
           timer: 2000,
         });
         console.log(err);
-        
       });
-
   };
 
   return (
-    <article className="bg-white rounded-md p-2 mt-4 w-80">
-      <div className="flex justify-around gap-2">
-        <div className="border-r-2">
+    <article className="bg-white rounded-md p-2 mt-4 w-80 sm:w-full lg:w-full">
+      <div className="flex justify-center gap-2">
+        <div className="border-r-2 w-full">
           <div className="border-b-2 w-full">
-            <h4 className="p-1 font-bold text-green-900">{props.title}</h4>
+            <h4 className="p-1 font-bold text-green-900 sm:text-xl">
+              {props.title}
+            </h4>
           </div>
-          <p className="p-1">{props.description}</p>
+          <p className="p-1 sm:text-xl">{props.description}</p>
         </div>
-        <div className="flex place-items-center p-2">
-          <button value={props._id} onClick={(e)=>handleDelete(e)}>
+        <div className="flex justify-items-end p-2">
+          <button value={props._id} onClick={(e) => handleDelete(e)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

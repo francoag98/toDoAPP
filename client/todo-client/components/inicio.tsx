@@ -19,11 +19,11 @@ export interface AppProp {
     _id: string;
   }[];
 }
-export interface Func extends AppProp{
-  onCreate: ()=> void,
+export interface Func extends AppProp {
+  onCreate: () => void;
 }
 export interface Func2 extends Post {
-  onCreate: ()=> void,
+  onCreate: () => void;
 }
 export interface codeParams {
   user: IUser;
@@ -111,11 +111,11 @@ const Inicio: React.FC = () => {
 
   return (
     <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-full">
-      <h1 className="text-center text-6xl text-white p-6 font-serif">
+      <h1 className="text-center text-6xl sm:text-8xl text-white p-6 font-serif">
         TO DO APP
       </h1>
-      <section className="flex flex-col items-center w-full">
-        <h3 className="p-2 w-fit text-white font-bold text-2xl border-b-2 border-coll mb-4 text-center">
+      <section className="flex flex-col items-center w-full ">
+        <h3 className="p-2 w-fit text-white font-bold text-2xl border-b-2 border-coll mb-4 text-center sm:w-2/3 lg:w-1/2 xl:text-3xl">
           {user?.name}, create your ToDo
         </h3>
         <FormToDo
@@ -126,10 +126,13 @@ const Inicio: React.FC = () => {
         />
       </section>
       <div>
-        <ToDoList onCreate={()=>{
-          uploaded(false);
-          setUpload(true)
-        }} posts={posts?.posts} />
+        <ToDoList
+          onCreate={() => {
+            uploaded(false);
+            setUpload(true);
+          }}
+          posts={posts?.posts}
+        />
       </div>
     </main>
   );

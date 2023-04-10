@@ -41,7 +41,7 @@ export const FormToDo: React.FC<Create> = (props) => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-col w-80 mb-6 bg-white p-4 gap-4 rounded-md">
+      className="flex flex-col w-80 mb-6 bg-white p-4 gap-4 rounded-md sm:w-2/3 lg:w-1/2">
       <div className="flex flex-col">
         <label className="text-green-700 font-bold">Title</label>
         <input
