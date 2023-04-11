@@ -2,7 +2,6 @@ import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import routes from "./routes/index";
-import cookieSession from "cookie-session";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
