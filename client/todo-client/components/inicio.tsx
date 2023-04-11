@@ -51,7 +51,6 @@ const Inicio: React.FC = () => {
   useEffect(() => {
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
-    console.log(transform);
 
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
@@ -61,7 +60,6 @@ const Inicio: React.FC = () => {
       })
       .then((response) => response.data)
       .then((data) => {
-        console.log(data);
         return setUser(data);
       })
       .catch((error) => {
@@ -80,7 +78,6 @@ const Inicio: React.FC = () => {
       })
       .then((response) => {
         setPosts(response.data);
-        console.log("posts", posts);
       })
       .catch((error) => {
         console.log(error);
@@ -101,7 +98,6 @@ const Inicio: React.FC = () => {
           setPosts(response.data);
           setUpload(false);
           router.refresh();
-          console.log("posts", posts);
         })
         .catch((error) => {
           console.log(error);

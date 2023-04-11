@@ -24,7 +24,7 @@ export const FormToDo: React.FC<Create> = (props) => {
     event.preventDefault();
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
-    await axios.post("http://localhost:3001/posts", todo, {
+    await axios.post(`${process.env.NEXT_PUBLIC_BACKURL}/posts`, todo, {
       headers: {
         Authorization: `bearer ${transform}`,
       },

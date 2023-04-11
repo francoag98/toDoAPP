@@ -5,6 +5,11 @@ import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const errorStyle = "text-red-600 font-bold p-1";
 
 export interface IUserLogin {
   email: string;
@@ -17,6 +22,16 @@ export interface IDataUser {
   token: string;
 }
 
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Insert valid email"),
+    password: yup.string().required("Password is required"),
+  })
+  .required();
+
 const Login: React.FC = () => {
   const router = useRouter();
   const [loginData, setLoginData] = useState<IUserLogin>({
@@ -28,34 +43,35 @@ const Login: React.FC = () => {
     name: "",
     token: "",
   });
+  const [result, setResult] = useState<String>();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IUserLogin>({
+    resolver: yupResolver(schema),
+  });
   const formValues = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({ ...loginData, [event.target.name]: event.target.value });
   };
-  console.log(loginData);
 
-  const loginUser = async (): Promise<IDataUser> => {
-    const log = await axios.post("http://localhost:3001/login", loginData);
-    const response = log.data;
-    console.log(response);
-
-    setUser(response);
-    return response;
-  };
-
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const users: IDataUser = await loginUser();
-    try {
-      if (user) {
-        document.cookie = `myToken = ${users.token}`;
-        router.push("/");
-        return users;
-      }
-    } catch (error) {
-      router.push("/login");
+  const submitHandler = handleSubmit((value) => {
+    setResult("");
+    let back_url = process.env.NEXT_PUBLIC_BACKURL;
+    if (back_url) {
+      axios
+        .post<IDataUser>(`${back_url}/login`, value)
+        .then(({ data }) => {
+          document.cookie = `myToken = ${data.token}`;
+          setUser(data);
+          router.push("/");
+        })
+        .catch((e) => {
+          setResult(e.message);
+        });
     }
-  };
+  });
   return (
     <main className="flex flex-col h-screen w-full m-0 bg-video">
       {/* <video src="video3.mp4" autoPlay loop muted className="bg-video"></video> */}
@@ -79,23 +95,32 @@ const Login: React.FC = () => {
           <div className="flex flex-col gap-1 w-full">
             <label className=" text-green-700 font-bold">Email</label>
             <input
+              {...register("email")}
               onChange={formValues}
               type="text"
               placeholder="Enter your email..."
               name="email"
               className="p-2 w-full border-b-2 bg-transparent border-green-700 text-green-700 focus:outline-none"
             />
+            {errors.email?.message && (
+              <p className={errorStyle}>{errors.email?.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 mt-2">
             <label className="text-green-700 font-bold">Password</label>
             <input
+              {...register("password")}
               onChange={formValues}
               type="password"
               name="password"
               placeholder="Enter your password..."
               className="p-2 border-b-2 bg-transparent border-green-700 rounded-sm text-green-700 focus:outline-none"
             />
+            {errors.password?.message && (
+              <p className={errorStyle}>{errors.password?.message}</p>
+            )}
           </div>
+
           <div className="flex flex-col-reverse gap-1">
             <div className="text-center border-2  border-green-700 rounded-sm">
               <button
@@ -104,6 +129,7 @@ const Login: React.FC = () => {
                 Submit
               </button>
             </div>
+            {result?.length && <p className={errorStyle}>{result}</p>}
             <div className="mb-3">
               <span className="mr-1 text-green-700">
                 Do you not have an account?

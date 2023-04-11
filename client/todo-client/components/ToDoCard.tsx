@@ -15,11 +15,14 @@ export const ToDoCard: React.FC<Func2> = (props) => {
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
     await axios
-      .delete(`http://localhost:3001/posts/${event.currentTarget.value}`, {
-        headers: {
-          Authorization: `bearer ${transform}`,
-        },
-      })
+      .delete(
+        `${process.env.NEXT_PUBLIC_BACKURL}/posts/${event.currentTarget.value}`,
+        {
+          headers: {
+            Authorization: `bearer ${transform}`,
+          },
+        }
+      )
       .then((res) => {
         Swal.fire({
           icon: "success",

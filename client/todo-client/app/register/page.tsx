@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import Link  from "next/link"
+import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface RegisterData {
   name: String;
@@ -24,7 +26,29 @@ const Register: React.FC = () => {
     });
   };
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {};
+  const registerUser = async (): Promise<RegisterData> => {
+    const reg = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKURL}/users`,
+      registerData
+    );
+    const response = reg.data;
+    return response;
+  };
+
+  const router = useRouter();
+
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const users: RegisterData = await registerUser();
+    try {
+      if (users) {
+        router.push("/login");
+        return users;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <main className="flex flex-col h-screen w-full m-0 bg-video">
@@ -87,15 +111,13 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="mb-3">
-              <span className="mr-1 text-green-700">
-                Do you have an account?
-              </span>
-              <Link href="/login">
-                <button className="text-green-700 font-bold underline">
-                  Sign In
-                </button>
-                </Link>
-            </div>
+            <span className="mr-1 text-green-700">Do you have an account?</span>
+            <Link href="/login">
+              <button className="text-green-700 font-bold underline">
+                Sign In
+              </button>
+            </Link>
+          </div>
           <div className="flex flex-col-reverse gap-1">
             <div className="text-center border-2  border-green-700 rounded-sm mt-2">
               <button

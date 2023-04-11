@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.0.1",
     "@types/node-jose": "^1.1.10",
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
@@ -19,6 +20,7 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
     "sweetalert2": "^11.7.3",
     "typescript": "5.0.2",
     "yup": "^1.0.2"
