@@ -59,18 +59,18 @@ const Login: React.FC = () => {
   const submitHandler = handleSubmit((value) => {
     setResult("");
     let back_url = process.env.NEXT_PUBLIC_BACKURL;
-    if (back_url) {
-      axios
-        .post<IDataUser>(`${back_url}/login`, value)
-        .then(({ data }) => {
-          document.cookie = `myToken = ${data.token}`;
-          setUser(data);
-          router.push("/");
-        })
-        .catch((e) => {
-          setResult(e.message);
-        });
-    }
+    axios
+      .post<IDataUser>(`${back_url}/login`, value)
+      .then(({ data }) => {
+        document.cookie = `myToken = ${data.token}`;
+        setUser(data);
+        router.push("/");
+      })
+      .catch((e) => {
+        console.log(e);
+
+        setResult(e.message);
+      });
   });
   return (
     <main className="flex flex-col h-screen w-full m-0 bg-video">
