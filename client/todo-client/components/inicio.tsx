@@ -54,7 +54,7 @@ const Inicio: React.FC = () => {
     console.log(transform);
 
     axios
-      .get("http://localhost:3001/users/token", {
+      .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
         headers: {
           Authorization: `bearer ${transform}`,
         },
@@ -73,7 +73,7 @@ const Inicio: React.FC = () => {
     const myToken = document.cookie;
     const transform = myToken.replace("myToken=", "");
     axios
-      .get("http://localhost:3001/posts/userSpecified", {
+      .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
         headers: {
           Authorization: `bearer ${transform}`,
         },
@@ -92,7 +92,7 @@ const Inicio: React.FC = () => {
       const myToken = document.cookie;
       const transform = myToken.replace("myToken=", "");
       axios
-        .get("http://localhost:3001/posts/userSpecified", {
+        .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
           headers: {
             Authorization: `bearer ${transform}`,
           },
