@@ -3,7 +3,7 @@
     "dev": "nodemon",
     "start": "node build/index.js",
     "tsc": "tsc",
-    "build": "tsc -p ."
+    "build": "tsc -p"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
