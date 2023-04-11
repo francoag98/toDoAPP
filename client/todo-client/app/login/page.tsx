@@ -58,9 +58,10 @@ const Login: React.FC = () => {
 
   const submitHandler = handleSubmit((value) => {
     setResult("");
-    let back_url = process.env.NEXT_PUBLIC_BACKURL;
+    console.log(process.env.NEXT_PUBLIC_BACKURL);
+
     axios
-      .post<IDataUser>(`${back_url}/login`, value)
+      .post<IDataUser>(`${process.env.NEXT_PUBLIC_BACKURL}/login`, value)
       .then(({ data }) => {
         document.cookie = `myToken = ${data.token}`;
         setUser(data);
