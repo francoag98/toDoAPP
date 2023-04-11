@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 interface RegisterData {
   name: String;
@@ -11,6 +15,20 @@ interface RegisterData {
   password: String;
 }
 
+const errorStyle = "text-red-600 font-bold p-1";
+
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Insert valid email"),
+    password: yup.string().required("Password is required"),
+    lastName: yup.string().required("LastName is required"),
+    name: yup.string().required("Name is required"),
+  })
+  .required();
+
 const Register: React.FC = () => {
   const [registerData, setRegisterData] = useState<RegisterData>({
     name: "",
@@ -18,6 +36,7 @@ const Register: React.FC = () => {
     email: "",
     password: "",
   });
+  const [result, setResult] = useState<String>("");
 
   const formValues = (event: React.ChangeEvent<HTMLInputElement>) => {
     return setRegisterData({
@@ -26,29 +45,34 @@ const Register: React.FC = () => {
     });
   };
 
-  const registerUser = async (): Promise<RegisterData> => {
-    const reg = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKURL}/users`,
-      registerData
-    );
-    const response = reg.data;
-    return response;
-  };
-
   const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterData>({
+    resolver: yupResolver(schema),
+  });
 
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const users: RegisterData = await registerUser();
-    try {
-      if (users) {
+  const submitHandler = handleSubmit((value) => {
+    const URL = process.env.NEXT_PUBLIC_BACKURL;
+    setResult("");
+    axios
+      .post<RegisterData>(`${URL}/users`, value)
+      .then(({ data }) => {
+        Swal.fire({
+          icon: "success",
+          title:
+            "<h4> User created <h4 style='color: green; font-weight: 700'>successfuly</h4></h4>",
+          timer: 2000,
+          showConfirmButton: false,
+        });
         router.push("/login");
-        return users;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      })
+      .catch((e) => {
+        setResult(e.response.data.message);
+      });
+  });
 
   return (
     <main className="flex flex-col h-screen w-full m-0 bg-video">
@@ -73,42 +97,58 @@ const Register: React.FC = () => {
           <div className="flex flex-col gap-1 w-full">
             <label className=" text-green-700 font-bold">Name</label>
             <input
+              {...register("name")}
               onChange={formValues}
               type="text"
               placeholder="Enter your Name..."
               name="name"
               className="p-1 w-full border-b-2 bg-transparent border-green-700 text-green-700 focus:outline-none"
             />
+            {errors.name?.message && (
+              <p className={errorStyle}>{errors.name?.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 mt-2">
             <label className="text-green-700 font-bold">LastName</label>
             <input
+              {...register("lastName")}
               onChange={formValues}
               type="text"
               name="lastName"
               placeholder="Enter your LastName..."
               className="p-1 border-b-2 bg-transparent border-green-700 rounded-sm text-green-700 focus:outline-none"
             />
+            {errors.lastName?.message && (
+              <p className={errorStyle}>{errors.lastName?.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 mt-2">
             <label className="text-green-700 font-bold">Email</label>
             <input
+              {...register("email")}
               onChange={formValues}
               type="email"
               name="email"
               placeholder="Enter your Email..."
               className="p-1 border-b-2 bg-transparent border-green-700 rounded-sm text-green-700 focus:outline-none"
             />
+            {errors.email?.message && (
+              <p className={errorStyle}>{errors.email?.message}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 mt-2">
             <label className="text-green-700 font-bold">Password</label>
             <input
+              {...register("password")}
               onChange={formValues}
               type="password"
               name="password"
               placeholder="Enter your Password..."
               className="p-1 border-b-2 bg-transparent border-green-700 rounded-sm text-green-700 focus:outline-none"
             />
+            {errors.password?.message && (
+              <p className={errorStyle}>{errors.password?.message}</p>
+            )}
           </div>
           <div className="mb-3">
             <span className="mr-1 text-green-700">Do you have an account?</span>
@@ -118,6 +158,7 @@ const Register: React.FC = () => {
               </button>
             </Link>
           </div>
+          {result.length > 0 && <p className={errorStyle}>{result}</p>}
           <div className="flex flex-col-reverse gap-1">
             <div className="text-center border-2  border-green-700 rounded-sm mt-2">
               <button
