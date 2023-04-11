@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node build/index.js",
-    "build": "tsc"
+    "tsc": "tsc",
+    "build": "tsc -p ."
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
