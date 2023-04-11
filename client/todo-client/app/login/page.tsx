@@ -43,7 +43,7 @@ const Login: React.FC = () => {
     name: "",
     token: "",
   });
-  const [result, setResult] = useState<String>();
+  const [result, setResult] = useState<String>("");
 
   const {
     register,
@@ -129,7 +129,7 @@ const Login: React.FC = () => {
                 Submit
               </button>
             </div>
-            {result?.length && <p className={errorStyle}>{result}</p>}
+            {result.length > 0 && <p className={errorStyle}>{result}</p>}
             <div className="mb-3">
               <span className="mr-1 text-green-700">
                 Do you not have an account?
