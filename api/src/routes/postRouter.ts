@@ -26,7 +26,6 @@ route.post("/posts", userValidation, async (req: Request, res: Response) => {
       const posts = await newPost(body, users._id);
       console.log(posts);
       await users.updateOne({ posts: [...users.posts, posts] });
-      users.save();
       res.status(200).send(posts);
     }
   } catch (err: any) {
@@ -65,11 +64,11 @@ route.get(
 route.delete(
   "/posts/:id",
   userValidation,
-  async (req:Request, res:Response) => {
+  async (req: Request, res: Response) => {
     const id = req.params.id;
     console.log("estoy en la ruta");
     console.log("este es el id", id);
-    
+
     const authorization = req.get("authorization");
     try {
       let token: String | undefined = authorization?.split(" ")[1];
@@ -81,7 +80,7 @@ route.delete(
         res.status(200).send(postId);
       }
     } catch (error: any) {
-       res.status(400).send({ error: error.message });
+      res.status(400).send({ error: error.message });
     }
   }
 );
