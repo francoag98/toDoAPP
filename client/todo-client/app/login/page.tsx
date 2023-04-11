@@ -57,11 +57,11 @@ const Login: React.FC = () => {
   };
 
   const submitHandler = handleSubmit((value) => {
+    const URL = process.env.NEXT_PUBLIC_BACKURL;
     setResult("");
-    console.log(process.env.NEXT_PUBLIC_BACKURL);
 
     axios
-      .post<IDataUser>(`${process.env.NEXT_PUBLIC_BACKURL}/login`, value)
+      .post<IDataUser>(`${URL}/login`, value)
       .then(({ data }) => {
         document.cookie = `myToken = ${data.token}`;
         setUser(data);
@@ -69,8 +69,7 @@ const Login: React.FC = () => {
       })
       .catch((e) => {
         console.log(e);
-
-        setResult(e.message);
+        setResult(e.response.data.message);
       });
   });
   return (
