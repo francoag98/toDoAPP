@@ -56,31 +56,45 @@ const Inicio: React.FC = () => {
   const getSession = () => {
     const session = localStorage.getItem("userSession") as string;
     const res = JSON.parse(session);
+    setUserSession(res);
     return res;
   };
-
+  const userToken = async () => {
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
+        headers: {
+          Authorization: `bearer ${userSession.token}`,
+        },
+      })
+      .then((response) => response.data)
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((e) => e);
+  };
+  const userPosts = async () => {
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
+        headers: {
+          Authorization: `bearer ${userSession.token}`,
+        },
+      })
+      .then((response) => {
+        setPosts(response.data);
+      })
+      .catch((e) => e);
+  };
   useEffect(() => {
-    const session = getSession();
-    setUserSession(session);
-    if (userSession.token) {
-      axios
-        .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
-          headers: {
-            Authorization: `bearer ${userSession?.token}`,
-          },
-        })
-        .then((response) => response.data)
-        .then((data) => {
-          return setUser(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    getSession();
+    userToken();
   }, []);
 
   useEffect(() => {
-    if (userSession.token) {
+    userPosts();
+  }, [user, userSession.token]);
+
+  useEffect(() => {
+    if (upload) {
       axios
         .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
           headers: {
@@ -89,31 +103,12 @@ const Inicio: React.FC = () => {
         })
         .then((response) => {
           setPosts(response.data);
+          setUpload(false);
+          router.refresh();
         })
         .catch((error) => {
           console.log(error);
         });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (upload) {
-      if (userSession) {
-        axios
-          .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
-            headers: {
-              Authorization: `bearer ${userSession.token}`,
-            },
-          })
-          .then((response) => {
-            setPosts(response.data);
-            setUpload(false);
-            router.refresh();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
     }
   }, [upload, posts]);
 

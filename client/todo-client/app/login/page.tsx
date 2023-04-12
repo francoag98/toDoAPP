@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ClipLoader } from "react-spinners";
 
 const errorStyle = "text-red-600 font-bold p-1";
 
@@ -38,7 +39,7 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
-
+  const [loading, setLoading] = useState<Boolean>(false);
   const [result, setResult] = useState<String>("");
 
   const {
@@ -52,20 +53,26 @@ const Login: React.FC = () => {
     setLoginData({ ...loginData, [event.target.name]: event.target.value });
   };
 
+  const reset = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
   const submitHandler = handleSubmit((value) => {
+    reset();
     const URL = process.env.NEXT_PUBLIC_BACKURL;
     setResult("");
     axios
       .post<IDataUser>(`${URL}/login`, value)
       .then((response) => response.data)
       .then((data) => {
-        console.log("data", data);
         document.cookie = `myToken = ${data.token}`;
         localStorage.setItem("userSession", JSON.stringify(data));
         router.push("/");
       })
       .catch((e) => {
-        console.log(e);
         setResult(e.response.data.message);
       });
   });
@@ -118,15 +125,21 @@ const Login: React.FC = () => {
               <p className={errorStyle}>{errors.password?.message}</p>
             )}
           </div>
-
           <div className="flex flex-col-reverse gap-1">
-            <div className="text-center border-2  border-green-700 rounded-sm">
-              <button
-                type="submit"
-                className="p-2 text-green-700 font-bold hover:bg-green-700 hover:text-white w-full">
-                Submit
-              </button>
-            </div>
+            {loading ? (
+              <div className="text-center w-full">
+                <ClipLoader color="green" size={100} />
+              </div>
+            ) : (
+              <div className="text-center border-2  border-green-700 rounded-sm">
+                <button
+                  type="submit"
+                  className="p-2 text-green-700 font-bold hover:bg-green-700 hover:text-white w-full">
+                  Submit
+                </button>
+              </div>
+            )}
+
             {result.length > 0 && <p className={errorStyle}>{result}</p>}
             <div className="mb-3">
               <span className="mr-1 text-green-700">

@@ -21,26 +21,25 @@ export const ToDoList: React.FC<Func> = (props) => {
   }
 
   return (
-    <section className="flex flex-col items-center h-full">
+    <section className="flex flex-col items-center w-full h-screen p-2">
       <div className="p-2 border-b-2 w-80 sm:w-2/3 lg:w-1/2">
         <h3 className="text-2xl text-white font-bold sm:text-3xl lg:text-xl xl:text-3xl">
           To Do List
         </h3>
       </div>
       <div className="sm:w-2/3 lg:w-1/2">
-        {props &&
-          props.posts?.map((post: Post, index) => {
-            return (
-              <div key={index} className="mb-4 h-screen">
-                <ToDoCard
-                  onCreate={props.onCreate}
-                  title={post.title}
-                  description={post.description}
-                  _id={post._id}
-                />
-              </div>
-            );
-          })}
+        {props?.posts.map((post: Post) => {
+          return (
+            <div key={post._id}>
+              <ToDoCard
+                onCreate={props.onCreate}
+                title={post.title}
+                description={post.description}
+                _id={post._id}
+              />
+            </div>
+          );
+        })}
       </div>
     </section>
   );

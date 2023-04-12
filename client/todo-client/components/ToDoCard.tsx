@@ -46,7 +46,7 @@ export const ToDoCard: React.FC<Func2> = (props) => {
   };
 
   return (
-    <article className="bg-white rounded-md p-2 mt-4 w-80 sm:w-full lg:w-full">
+    <article className="bg-white rounded-md p-2 mt-5 w-80 sm:w-full lg:w-full mb-4">
       <div className="flex justify-center gap-2">
         <div className="border-r-2 w-full">
           <div className="border-b-2 w-full">
