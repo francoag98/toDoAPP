@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
@@ -17,8 +17,8 @@ export interface IUserLogin {
 }
 
 export interface IDataUser {
-  email: string;
-  name: string;
+  Email: string;
+  Name: string;
   token: string;
 }
 
@@ -38,11 +38,7 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
-  const [user, setUser] = useState<IDataUser>({
-    email: "",
-    name: "",
-    token: "",
-  });
+
   const [result, setResult] = useState<String>("");
 
   const {
@@ -59,12 +55,13 @@ const Login: React.FC = () => {
   const submitHandler = handleSubmit((value) => {
     const URL = process.env.NEXT_PUBLIC_BACKURL;
     setResult("");
-
     axios
       .post<IDataUser>(`${URL}/login`, value)
-      .then(({ data }) => {
+      .then((response) => response.data)
+      .then((data) => {
+        console.log("data", data);
         document.cookie = `myToken = ${data.token}`;
-        setUser(data);
+        localStorage.setItem("userSession", JSON.stringify(data));
         router.push("/");
       })
       .catch((e) => {
@@ -72,6 +69,7 @@ const Login: React.FC = () => {
         setResult(e.response.data.message);
       });
   });
+
   return (
     <main className="flex flex-col h-screen w-full m-0 bg-video">
       {/* <video src="video3.mp4" autoPlay loop muted className="bg-video"></video> */}

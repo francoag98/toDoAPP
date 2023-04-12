@@ -5,21 +5,23 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export const ToDoCard: React.FC<Func2> = (props) => {
+  const getSession = () => {
+    const session = localStorage.getItem("userSession") as string;
+    const res = JSON.parse(session);
+    return res;
+  };
+
   const handleDelete = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    console.log("target2", event.currentTarget);
-    console.log(props);
-    console.log("target", event.currentTarget.value);
-    const myToken = document.cookie;
-    const transform = myToken.replace("myToken=", "");
+    const session = getSession();
     await axios
       .delete(
         `${process.env.NEXT_PUBLIC_BACKURL}/posts/${event.currentTarget.value}`,
         {
           headers: {
-            Authorization: `bearer ${transform}`,
+            Authorization: `bearer ${session.token}`,
           },
         }
       )

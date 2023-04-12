@@ -19,14 +19,17 @@ export const FormToDo: React.FC<Create> = (props) => {
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     return setTodo({ ...todo, [event.target.name]: event.target.value });
   };
-
+  const getSession = () => {
+    const session = localStorage.getItem("userSession") as string;
+    const res = JSON.parse(session);
+    return res;
+  };
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const myToken = document.cookie;
-    const transform = myToken.replace("myToken=", "");
+    const session = getSession();
     await axios.post(`${process.env.NEXT_PUBLIC_BACKURL}/posts`, todo, {
       headers: {
-        Authorization: `bearer ${transform}`,
+        Authorization: `bearer ${session.token}`,
       },
     });
     setTodo({

@@ -5,6 +5,7 @@ import axios from "axios";
 import { FormToDo } from "./formCreateToDo";
 import { ToDoList } from "./ListOfAllToDo";
 import { useRouter } from "next/navigation";
+import { IDataUser } from "@/app/login/page";
 
 export interface Post {
   title: string;
@@ -39,6 +40,11 @@ const Inicio: React.FC = () => {
     email: "",
     posts: [],
   });
+  const [userSession, setUserSession] = useState<IDataUser>({
+    Email: "",
+    Name: "",
+    token: "",
+  });
   const [upload, setUpload] = useState<Boolean>(false);
   const [posts, setPosts] = useState<AppProp>({ posts: [] });
   const router = useRouter();
@@ -47,61 +53,67 @@ const Inicio: React.FC = () => {
       setUpload(true);
     }
   };
+  const getSession = () => {
+    const session = localStorage.getItem("userSession") as string;
+    const res = JSON.parse(session);
+    return res;
+  };
 
   useEffect(() => {
-    const myToken = document.cookie;
-    const transform = myToken.replace("myToken=", "");
-
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
-        headers: {
-          Authorization: `bearer ${transform}`,
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => {
-        return setUser(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const myToken = document.cookie;
-    const transform = myToken.replace("myToken=", "");
-    axios
-      .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
-        headers: {
-          Authorization: `bearer ${transform}`,
-        },
-      })
-      .then((response) => {
-        setPosts(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [user]);
-
-  useEffect(() => {
-    if (upload) {
-      const myToken = document.cookie;
-      const transform = myToken.replace("myToken=", "");
+    const session = getSession();
+    setUserSession(session);
+    if (userSession.token) {
       axios
-        .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
+        .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
           headers: {
-            Authorization: `bearer ${transform}`,
+            Authorization: `bearer ${userSession?.token}`,
           },
         })
-        .then((response) => {
-          setPosts(response.data);
-          setUpload(false);
-          router.refresh();
+        .then((response) => response.data)
+        .then((data) => {
+          return setUser(data);
         })
         .catch((error) => {
           console.log(error);
         });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userSession.token) {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
+          headers: {
+            Authorization: `bearer ${userSession.token}`,
+          },
+        })
+        .then((response) => {
+          setPosts(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (upload) {
+      if (userSession) {
+        axios
+          .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
+            headers: {
+              Authorization: `bearer ${userSession.token}`,
+            },
+          })
+          .then((response) => {
+            setPosts(response.data);
+            setUpload(false);
+            router.refresh();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   }, [upload, posts]);
 
@@ -112,7 +124,7 @@ const Inicio: React.FC = () => {
       </h1>
       <section className="flex flex-col items-center w-full ">
         <h3 className="p-2 w-fit text-white font-bold text-2xl border-b-2 border-coll mb-4 text-center sm:w-2/3 lg:w-1/2 xl:text-3xl">
-          {user?.name}, create your ToDo
+          {userSession?.Name}, create your ToDo
         </h3>
         <FormToDo
           onCreate={() => {
