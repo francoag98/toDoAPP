@@ -63,7 +63,7 @@ const Inicio: React.FC = () => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_BACKURL}/users/token`, {
         headers: {
-          Authorization: `bearer ${userSession.token}`,
+          Authorization: `bearer ${userSession?.token}`,
         },
       })
       .then((response) => response.data)
@@ -76,13 +76,18 @@ const Inicio: React.FC = () => {
     await axios
       .get(`${process.env.NEXT_PUBLIC_BACKURL}/posts/userSpecified`, {
         headers: {
-          Authorization: `bearer ${userSession.token}`,
+          Authorization: `bearer ${userSession?.token}`,
         },
       })
       .then((response) => {
         setPosts(response.data);
       })
       .catch((e) => e);
+  };
+  const logOut = () => {
+    localStorage.clear();
+    document.cookie = "";
+    router.push("/login");
   };
   useEffect(() => {
     getSession();
@@ -110,17 +115,26 @@ const Inicio: React.FC = () => {
           console.log(error);
         });
     }
-  }, [upload, posts]);
+  }, [upload, posts, userSession.token]);
 
   return (
     <main className="bg-gradient-to-r from-green-500 via-green-700 to-green-900 w-full h-full">
       <h1 className="text-center text-6xl sm:text-8xl text-white p-6 font-serif">
         TO DO APP
       </h1>
-      <section className="flex flex-col items-center w-full ">
-        <h3 className="p-2 w-fit text-white font-bold text-2xl border-b-2 border-coll mb-4 text-center sm:w-2/3 lg:w-1/2 xl:text-3xl">
-          {userSession?.Name}, create your ToDo
-        </h3>
+      <section className="flex flex-col items-center w-full">
+        <div className="flex w-full justify-center max-sm:text-center max-sm:flex-col max-sm:w-80 max-sm:items-center">
+          <h3 className="text-left p-2 w-fit text-white font-bold border-b-2 text-2xl mb-4 sm:w-2/3 lg:w-1/2 xl:text-3xl">
+            {userSession?.Name}, create your ToDo
+          </h3>
+          <div className="-ml-20 max-sm:-ml-0 max-sm:mb-2 max-sm:-mt-4">
+            <button
+              onClick={logOut}
+              className="w-fit mr-2 mt-2 text-white border-r-2 border-l-2 max-sm:border-2 border-white p-1 hover:text-green-900 hover:bg-white hover:font-bold hover:duration-200">
+              Log Out
+            </button>
+          </div>
+        </div>
         <FormToDo
           onCreate={() => {
             uploaded(false);

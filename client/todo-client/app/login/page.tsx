@@ -84,8 +84,8 @@ const Login: React.FC = () => {
         <h1 className="text-center font-bold text-white sm:bg-transparent p-2 text-7xl sm:text-9xl mt-10 sm:mt-10 md:mt-10 lg:mt-20 2xl:mt-24 font-sans -mb-10">
           WELCOME
         </h1>
-        <div className="text-center m-auto -mt-2 sm:-mt-10">
-          <p className="font-sans font-bold text-sm sm:text-2xl text-green-700 sm:pl-5 sm:pr-4 pr-2 pl-3 bg-white mr-2 ml-3">
+        <div className="text-center m-auto -mt-2 sm:-mt-12">
+          <p className="font-sans font-bold text-sm sm:text-2xl text-green-700 sm:pl-6 sm:pr-5 pr-2 pl-3 bg-white mr-1 ml-2">
             TO TODO APP
           </p>
         </div>
