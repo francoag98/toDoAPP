@@ -84,9 +84,10 @@ const Inicio: React.FC = () => {
       })
       .catch((e) => e);
   };
-  const logOut = () => {
+  const logOut = async () => {
     localStorage.clear();
-    document.cookie = "";
+    document.cookie =
+      "myToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/login");
   };
   useEffect(() => {
