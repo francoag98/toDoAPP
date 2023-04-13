@@ -112,7 +112,7 @@ const Inicio: React.FC = () => {
           router.refresh();
         })
         .catch((error) => {
-          console.log(error);
+          error;
         });
     }
   }, [upload, posts, userSession.token]);
