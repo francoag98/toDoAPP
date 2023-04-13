@@ -29,7 +29,7 @@ export const ToDoCard: React.FC<Func2> = (props) => {
         Swal.fire({
           icon: "success",
           title:
-            "<h4> El post fue <h4 style='color: #DD2E2E; font-weight: 700'>eliminado</h4></h4>",
+            "<h4> Post eliminated <h4 style='color: green; font-weight: 700'>successfully</h4></h4>",
           timer: 2000,
           showConfirmButton: false,
         });
@@ -38,7 +38,7 @@ export const ToDoCard: React.FC<Func2> = (props) => {
       .catch((err) => {
         Swal.fire({
           icon: "error",
-          title: `<h4>No se ha podido eliminar el post!</h4>`,
+          title: `<h4>Could not delete the post!</h4>`,
           timer: 2000,
         });
         console.log(err);
