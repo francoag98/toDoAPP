@@ -89,7 +89,7 @@ export const FormToDo: React.FC<Create> = (props) => {
           <button
             className="text-green-700 font-bold w-full p-1 border-2 rounded-sm border-green-700 mt-4 hover:bg-green-700 hover:text-white hover:duration-500"
             type="submit">
-            Crear
+            Create
           </button>
         )}
       </div>
